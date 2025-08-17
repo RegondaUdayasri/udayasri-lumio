@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Meeting Notes Summarizer</title>
+</head>
+<body>
+    <h2>Meeting Notes Summarizer</h2>
+    <form id="summarizeForm">
+        <textarea id="transcript" rows="10" cols="60" placeholder="Paste meeting notes here"></textarea><br>
+        <input type="text" id="prompt" value="Summarize as bullet points for executives"><br>
+        <button type="submit">Generate Summary</button>
+    </form>
+    <h3>Summary:</h3>
+    <textarea id="summary" rows="10" cols="60"></textarea>
+    <script>
+        document.getElementById('summarizeForm').onsubmit = async function(e){
+            e.preventDefault();
+            const transcript = document.getElementById('transcript').value;
+            const prompt = document.getElementById('prompt').value;
+            const response = await fetch('/summarize', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ transcript, prompt })
+            });
+            const data = await response.json();
+            document.getElementById('summary').value = data.summary;
+        }
+    </script>
+</body>
+</html>
